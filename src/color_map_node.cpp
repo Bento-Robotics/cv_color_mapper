@@ -25,7 +25,7 @@ class ColorMapNode : public rclcpp::Node
       pub_ = std::make_shared<image_transport::Publisher>(
           it_->advertise("output_image", 1));
     }
-
+ 
 
     void image_callback (const sensor_msgs::msg::Image::ConstSharedPtr & msg) {
       // Convert ROS image to OpenCV format
@@ -43,7 +43,8 @@ class ColorMapNode : public rclcpp::Node
 
       // Apply OpenCV color map
       cv::Mat color_mapped_image;
-      cv::convertScaleAbs(cv_ptr->image, color_mapped_image, 40, -250); // alpha=contrast, beta=brightness
+      cv::convertScaleAbs(cv_ptr->image, color_mapped_image, 40, -270); // alpha=contrast, beta=brightness
+      cv::resize(color_mapped_image, color_mapped_image, cv::Size(320, 240), 0, 0, CV_INTER_LANCZOS4);
       cv::applyColorMap(color_mapped_image, color_mapped_image, cv::COLORMAP_INFERNO);
 
       // Convert back to ROS image format
