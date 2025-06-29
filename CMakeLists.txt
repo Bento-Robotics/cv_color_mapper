@@ -11,15 +11,23 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(image_transport REQUIRED)
+
+include_directories(
+  ${OpenCV_INCLUDE_DIRS}
+)
 
 add_executable(color_map_node src/color_map_node.cpp)
 
-ament_target_dependencies(color_map_node rclcpp sensor_msgs cv_bridge OpenCV)
+ament_target_dependencies(color_map_node rclcpp sensor_msgs cv_bridge OpenCV image_transport)
+
+target_link_libraries(color_map_node
+  ${OpenCV_LIBS}
+)
 
 install(
   DIRECTORY
     launch
-    parameter
   DESTINATION share/${PROJECT_NAME}
 )
 
